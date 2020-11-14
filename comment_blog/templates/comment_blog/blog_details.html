@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>{{ post.title }}</h1>
+            <small>
+                <p>
+                    {{post.created_on.date}} | Categories: {% for category in post.categories.all %}
+                    <a href="{% url 'blog_category' category.name %}">
+                        {{ category.name }}
+                    </a>
+                    {% endfor %}
+                </p>
+            </small>
+
+            <img src="{{ post.image.url }}" alt="" style="height: auto; width: 50%" />
+
+            <p>{{ post.body | linebreaks }}</p>
+            <a href="{% url 'post_update' post.pk %}" class="btn btn-success">Update Blog</a>
+            <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">Delete Blog</a>
+            <h3>Leave a Comments:</h3>
+            <form action="/comment_blog/{{ post.pk }}/" method="post" autocomplete = "off">
+                {% csrf_token %}
+                <div class="form-group">{{ form.author }}</div>
+                <div class="form-group">{{ form.body }}</div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% if comments %}
+            <h3>Comments:</h3>
+            {% endif %} {% for comment in comments %}
+            <small>
+                <b>{{ comment.author }}</b> wrote: On {{ comment.created_on.date }}
+            </small>
+            <p>{{ comment.body }}</p>
+            <hr />
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
