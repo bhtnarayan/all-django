@@ -1,0 +1,7 @@
+<h2>Log In</h2>
+<form method="post">
+  {% raw %}{% csrf_token %}
+  {{ form.as_p }}{% endraw %}
+  <button type="submit">Log In</button>
+  
+</form>

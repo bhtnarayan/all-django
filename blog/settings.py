@@ -36,13 +36,81 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'django.contrib.sites',  #new
+
+
+    # third party  
+    'allauth',  #new
+    'allauth.account',  #new
+    'allauth.socialaccount',   #new
+    'allauth.socialaccount.providers.github',   #new
+    
+    #locals
     'comment_blog',
+    'articles',
+    'cities',
+    'accounts',
+    'rest_framework',
+    'polls',
+    'sendemail.apps.SendemailConfig',  #new 
+    'todos',
+    'apis',
+    'schools',     #models
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : [
+        'rest_framework.permissions.AllowAny',
+    ]
+}
+
+TIME_ZONE = 'America/New_York' 
+
+
+AUTH_USER_MODEL = 'accounts.CustomUser'  #new
+
+DEFAULT_FROM_EMAIL = 'bhattarai@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+
+AUTHENTICATION_BACKENDS = (
+    #Needed login by username in django admin, regardless of a allauth 
+    "django.contrib.auth.backends.ModelBackend",
+
+    # allauth specific authentication methods, such as login by email 
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+SITE_ID = 1 
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False 
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+
+# To send actual emails you will need a managed service like SendGrid, mailgun
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # new
+# DEFAULT_FROM_EMAIL = 'will@learndjango.com'
+# EMAIL_HOST = 'smtp.sendgrid.net' # new
+# EMAIL_HOST_USER = 'apikey' # new
+# EMAIL_HOST_PASSWORD = '<sendgrid_password>' # new
+# EMAIL_PORT = 587 # new
+# EMAIL_USE_TLS = True # new
+
+
+
+LOGIN_REDIRECT_URL = "/comment_blog/home"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # new
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -119,6 +187,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)  #new
+STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))  #new 
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' # new 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # new
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

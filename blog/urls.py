@@ -17,9 +17,19 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings 
 from django.conf.urls.static import static 
+from django.views.generic.base import TemplateView 
+from accounts.views import Home 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('comment_blog/', include('comment_blog.urls')),
+    path('articles/', include('articles.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('api/', include('polls.urls')),
+    path('sendemail/', include('sendemail.urls')), 
+    path('apis/v1/', include('apis.urls')),
+    path('cities/', include('cities.urls')),
+    path('', Home.as_view(), name = 'home'), #new
+
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

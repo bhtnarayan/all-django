@@ -1,0 +1,8 @@
+{% load socialaccount %}
+
+<h1>Django Allauth Tutorial</h1>
+{% if user.is_authenticated %}
+<p>Welcome {{ user.username }} !!!</p>
+{% else %}
+{% comment %} <a href="{% 'social:begin' 'github' %}">Sign Up</a> {% endcomment %}
+{% endif %}
